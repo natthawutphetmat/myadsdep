@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://adsdeps.com
+
+# Sitemaps
+Sitemap: https://adsdeps.com/sitemap.xml
