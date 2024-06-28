@@ -10,6 +10,10 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        if (!credentials) {
+          throw new Error('Credentials are missing');
+        }
+        
         try {
           const res = await fetch('https://bilapi.ads-webapp.com/login', {
             method: 'POST',
