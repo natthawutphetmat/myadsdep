@@ -11,9 +11,10 @@ const handler = NextAuth({
       },
       async authorize(credentials, req) {
         if (!credentials) {
+          console.error('Missing credentials');
           throw new Error('Credentials are missing');
         }
-        
+
         try {
           const res = await fetch('https://bilapi.ads-webapp.com/login', {
             method: 'POST',
@@ -27,6 +28,7 @@ const handler = NextAuth({
           });
 
           if (!res.ok) {
+            console.error('Failed to login, response status:', res.status);
             throw new Error('Failed to login');
           }
 
@@ -35,6 +37,7 @@ const handler = NextAuth({
           if (data.accessToken) {
             return { id: data.userId, name: data.name, email: data.email, token: data.accessToken };
           } else {
+            console.error('No access token found in response');
             return null;
           }
         } catch (error) {
@@ -45,6 +48,22 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.accessToken = user.token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user.accessToken = token.accessToken;
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/auth/signin',
+    error: '/auth/error',
+  },
 });
 
 export { handler as GET, handler as POST };
