@@ -1,0 +1,12 @@
+.admin {
+    max-width: 400px;
+    margin: 100px auto;
+    box-shadow: 0px 0px 3px 3px ;
+    padding: 20px;
+    text-align: center;
+    border-radius: 25px;
+}
+.admin input {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

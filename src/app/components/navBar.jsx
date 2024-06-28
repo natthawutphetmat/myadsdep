@@ -1,14 +1,18 @@
+"use client";
+
 import React from 'react'
 import Link from 'next/link';
 import Image from 'next/image';
+import { useSession, signOut } from 'next-auth/react';
 
 function Nav() {
+  const { data: session, status } = useSession();
   return (
     <>
     <div className='linecut'></div>
       <nav className="navbar navbar-expand-lg " id='nav'>
   <div className="container-fluid">
-    <Link className="navbar-brand" href="/line">
+    <Link className="navbar-brand" href="https://lin.ee/8Ty5gad">
     
     <Image src="/img/logo.png" alt="Favicon" width={60} height={60} />
 
@@ -41,10 +45,25 @@ function Nav() {
         </li>
       </ul>
       <span className="navbar-text">
-      <Link className="line" href="https://lin.ee/8Ty5gad">
-    
-    <Image src="/img/line.gif" alt="Favicon" width={150} height={35} />
-    </Link>
+
+        {session ? (
+          <div className='d-flex'>
+
+         <div className='mx-5'>
+         <div><img src="/img/user.png" width={50} alt="user" />  </div>
+         <div className='text-center' >{session.user.name}</div>
+         </div>
+         <div className='mx-5'>
+          <button onClick={() => signOut()} className='btn btn-outline-danger'>ออก</button>
+          </div>
+          </div>  
+        ):(
+          <><Link href="/admin/login" className='btn btn-outline-info'>login</Link></>
+        )
+      
+      
+      }
+   
    
       </span>
     </div>
